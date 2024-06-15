@@ -21,6 +21,12 @@
          <hr class="sidebar-divider" />
 
          @if(auth()->user()->role == 0)
+         <li class="nav-item {{ request()->is('rfid') ? 'active' : '' }}">
+             <a class="nav-link" href="/rfid">
+                 <i class="fas fa-fw fa-tachometer-alt"></i>
+                 <span>RFID</span></a>
+         </li>
+
          <li class="nav-item {{ request()->is('ruangan') ? 'active' : '' }}">
              <a class="nav-link" href="/ruangan">
                  <i class="fas fa-fw fa-tachometer-alt"></i>

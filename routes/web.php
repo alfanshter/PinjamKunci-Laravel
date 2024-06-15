@@ -5,8 +5,11 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\FasilitasController;
+use App\Http\Controllers\FasilitasRfidController;
 use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\ModeController;
 use App\Http\Controllers\PinjamKunci;
+use App\Http\Controllers\RfidController;
 use App\Http\Controllers\RuanganController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -58,3 +61,12 @@ Route::delete('/booking/{id}',[BookingController::class,'destroy']);
 // Dosen Controller
 Route::get('/dosen',[DosenController::class,'index'])->middleware('auth');
 Route::post('/dosen',[DosenController::class,'dosenregister']);
+
+//RFID
+Route::get('/rfid',[RfidController::class,'index'])->middleware('auth');
+Route::put('/rfid/{id}',[RfidController::class,'edit'])->middleware('auth');
+Route::delete('/rfid/{id}',[RfidController::class,'destroy']);
+
+//FasilitasRfid
+
+Route::post('/fasilitasRfid',[FasilitasRfidController::class,'store']);

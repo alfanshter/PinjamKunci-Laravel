@@ -16,6 +16,7 @@
 
     <!-- Custom styles for this template-->
     <link href="{{asset('admin/css/sb-admin-2.min.css')}}" rel="stylesheet" />
+
 </head>
 
 <body id="page-top">
@@ -36,7 +37,6 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     @yield('konten')
-
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -77,7 +77,7 @@
         </div>
     </div>
 
-    
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="{{asset('admin/vendor/jquery/jquery.min.js')}}"></script>
