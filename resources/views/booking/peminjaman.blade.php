@@ -26,7 +26,7 @@
                     <tr>
                         <th>No</th>
                         <th>Ruangan</th>
-                        <th>Mahasiswa</th>
+                        <th>Nama Peminjam</th>
                         <th>Fasilitas</th>
                         <th>Tanggal Pinjam</th>
                         <th>Tanggal Kembali</th>

@@ -2,7 +2,6 @@
 
 @section('konten')
 
-
 @if ($errors->any())
 <div class="alert alert-danger">
     <ul>
@@ -27,10 +26,10 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h2 class="modal-title fs-5" id="exampleModalLabel">Tambah Mahasiswa</h2>
+                        <h2 class="modal-title fs-5" id="exampleModalLabel">Tambah KPS</h2>
                     </div>
                     <div class="modal-body">
-                        <form class="user" action="/mahasiswaregister" method="post">
+                        <form class="user" action="/kps" method="post">
                             @csrf
                             <div class="mb-3">
                                 <label for="recipient-name" class="col-form-label">Name:</label>
@@ -72,7 +71,7 @@
                 </thead>
 
                 <tbody>
-                    @foreach($datamahasiswa as $datas)
+                    @foreach($data as $datas)
                     <tr>
                         <td>{{$loop->iteration}}</td>
                         <td>{{$datas->name}}</td>

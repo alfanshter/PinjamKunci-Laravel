@@ -8,18 +8,20 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
-class MahasiswaController extends Controller
+class KpsController extends Controller
 {
-    function index() {
+    function index()  {
 
-        $getdata = User::where('role',1)->get();
+        $getdata = User::where('role',3)->get();
 
-        return view('mahasiswa.mahasiswa',[
-            'datamahasiswa' => $getdata
+        return view('kps.kps',[
+            'data' => $getdata
         ]);
+        
+
     }
 
-    function mahasiswaregister(Request $request)
+    function kpsregister(Request $request)
     {
 
   
@@ -31,7 +33,7 @@ class MahasiswaController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect('/mahasiswa')
+            return redirect('/kps')
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -43,22 +45,19 @@ class MahasiswaController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => $hashpassword,
-                'role' => 1
+                'role' => 3
             ]);
 
     
     
             Session::flash('success', 'Registration Success');
     
-            return redirect('/mahasiswa');
+            return redirect('/kps');
         }else{
-            return redirect('/mahasiswa')
+            return redirect('/kps')
             ->with('gagal', 'password tidak sama');
         }
     
        
     }
-
-
-
 }

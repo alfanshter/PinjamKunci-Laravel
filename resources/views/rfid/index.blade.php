@@ -4,7 +4,7 @@
 
 
 <!-- Page Heading -->
-<h1 class="h3 mb-2 text-gray-800">rfid</h1><br>
+<h1 class="h3 mb-2 text-gray-800">KARTU RFID/RUANGAN</h1><br>
 
 @if ($errors->any())
 <div class="alert alert-danger">
@@ -36,11 +36,15 @@
                 <thead>
                     <tr>
                         <th>No</th>
+                        @if(auth()->user()->role == 0)
                         <th>Uid</th>
-                        <th>Kode</th>
+                        @endif
+                         <th>Kode</th>
                         <th>Fasilitas</th>
                         <th>Status</th>
+                        @if(auth()->user()->role == 0)
                         <th>Action</th>
+                        @endif
                     </tr>
                 </thead>
 
@@ -48,7 +52,10 @@
                     @foreach($data as $datas)
                     <tr>
                         <td>{{$loop->iteration}}</td>
+                        @if(auth()->user()->role == 0)
                         <td>{{$datas->uid}}</td>
+
+                        @endif
                         <td>{{$datas->kode}}</td>
                         <td>
                             @if($datas->fasilitas->isEmpty())
@@ -68,6 +75,7 @@
                                 @endif
 
                         </td>
+                        @if(auth()->user()->role == 0)
                         <td>
                             <div class="d-flex justify-content-center">
                                 <button class="btn btn-warning btn-block mx-1" style="max-height: 40px;max-width: 100px;" data-toggle="modal" data-target="#rfidModal{{$datas->id}}">Edit</button>
@@ -135,6 +143,7 @@
                                 </form>
                             </div>
                         </td>
+                        @endif
                     </tr>
                     @endforeach
                 </tbody>

@@ -9,6 +9,8 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+
+     //0 = admin, 1 = mahasiswa, 2 = dosen, 3 = kps
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {

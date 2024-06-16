@@ -16,7 +16,7 @@
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-
+        @if(auth()->user()->role == 0)
         <button class="btn btn-primary" data-toggle="modal" data-target="#bookingModal">Tambah</button>
         <!-- MODAL TAMBAH RUANGAN -->
         <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -55,6 +55,11 @@
                 </div>
             </div>
         </div>
+        @elseif(auth()->user()->role == 1)
+        <p>Daftar Booking <b style="color: black;">{{auth()->user()->name}} !</b></p>
+        @endif
+        
+        
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -63,10 +68,12 @@
                     <tr>
                         <th style="width: 10%;">No</th>
                         <th style="width:30%">Ruangan</th>
-                        <th style="width: 20%;">Mahasiswa</th>
+                        <th style="width: 20%;">Nama Peminjam</th>
                         <th style="width: 20%;">Fasilitas</th>
                         <th style="width: 20%;">Tanggal</th>
+                        @if(auth()->user()->role == 0)
                         <th style="width: 10%;">Action</th>
+                        @endif
                     </tr>
                 </thead>
 
@@ -84,6 +91,7 @@
                             @endforeach
                         </td>
                         <td>{{$datas->created_at}}</td>
+                        @if(auth()->user()->role == 0)
                         <td>
                             <div class="d-flex justify-content-center">
                                 <button class="btn btn-warning" data-toggle="modal" data-target="#bookingModal{{$datas->id}}">Edit</button>
@@ -102,6 +110,8 @@
                                 </form>
                             </div>
                         </td>
+
+                        @endif
                     </tr>
                     @endforeach
 

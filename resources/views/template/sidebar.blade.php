@@ -7,8 +7,12 @@
         <div class="sidebar-brand-text mx-3">Pinjam Kunci </div>
     </a>
 
+
+
     <!-- Divider -->
     <hr class="sidebar-divider my-0" />
+
+    @if(auth()->user()->role == 0)
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item {{ request()->is('dashboard') ? 'active' : '' }}">
@@ -20,7 +24,6 @@
     <!-- Divider -->
     <hr class="sidebar-divider" />
 
-    @if(auth()->user()->role == 0)
     <li class="nav-item {{ request()->is('rfid') ? 'active' : '' }}">
         <a class="nav-link" href="/rfid">
             <i class="fas fa-fw fa-id-card"></i>
@@ -60,14 +63,57 @@
             <span>Dosen</span>
         </a>
     </li>
+    <li class="nav-item {{ request()->is('kps') ? 'active' : '' }}">
+        <a class="nav-link" href="/kps">
+            <i class="fas fa-fw fa-chalkboard-teacher"></i>
+            <span>Pimpinan KPS</span>
+        </a>
+    </li>
 
-    @elseif(auth()->user()->role == 1)
-    <li class="nav-item {{ request()->is('ruangan') ? 'active' : '' }}">
-        <a class="nav-link" href="/ruangan">
+    @elseif(auth()->user()->role == 1 || auth()->user()->role == 2 )
+    <li class="nav-item {{ request()->is('rfid') ? 'active' : '' }}">
+        <a class="nav-link" href="/rfid">
             <i class="fas fa-fw fa-door-open"></i>
             <span>Ruangan</span>
         </a>
     </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0" />
+
+    <li class="nav-item {{ request()->is('booking') ? 'active' : '' }}">
+        <a class="nav-link" href="/booking">
+            <i class="fas fa-fw fa-calendar-check"></i>
+            <span>Booking</span>
+        </a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0" />
+
+    <li class="nav-item {{ request()->is('peminjaman') ? 'active' : '' }}">
+        <a class="nav-link" href="/peminjaman">
+            <i class="fas fa-fw fa-book"></i>
+            <span>Log Peminjaman</span>
+        </a>
+    </li>
+
+    @elseif(auth()->user()->role == 3)
+
+
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0" />
+
+    <li class="nav-item {{ request()->is('peminjaman') ? 'active' : '' }}">
+        <a class="nav-link" href="/peminjaman">
+            <i class="fas fa-fw fa-book"></i>
+            <span>Log Peminjaman</span>
+        </a>
+    </li>
+
+
+
     @endif
 
     <!-- Sidebar Toggler (Sidebar) -->

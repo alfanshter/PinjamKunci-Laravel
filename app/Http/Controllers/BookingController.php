@@ -14,17 +14,29 @@ class BookingController extends Controller
 {
     function index()
     {
-        $datamahasiswa = User::where('role', 1)->get();
-        $dataRfid = Rfid::where('status', 1)->get();
+        //admin
+        if (auth()->user()->role == 0) {
+            $datamahasiswa = User::whereIn('role', [1, 2])->get();
+            $dataRfid = Rfid::where('status', 1)->get();
+    
+            $getBooking = Booking::where('status',0)->with('user')->get();
+    
+            return view('booking.index', [
+                'datamahasiswa' => $datamahasiswa,
+                'dataBooking' => $getBooking,
+                'dataRfid' => $dataRfid
+    
+            ]);
+        }
+        //mahasiswa
+        if (auth()->user()->role == 1 || auth()->user()->role == 2) {
+            $getBooking = Booking::where('status',0)->where('id_user',auth()->user()->id)->with('user')->get();
+    
+            return view('booking.index', [
+                'dataBooking' => $getBooking    
+            ]);
+        }
 
-        $getBooking = Booking::where('status',0)->with('user')->get();
-
-        return view('booking.index', [
-            'datamahasiswa' => $datamahasiswa,
-            'dataBooking' => $getBooking,
-            'dataRfid' => $dataRfid
-
-        ]);
     }
 
     function storebooking(Request $request)
@@ -114,16 +126,25 @@ class BookingController extends Controller
 
     function peminjaman()
     {
-        $datamahasiswa = User::where('role', 1)->get();
-        $dataRfid = Rfid::where('status', 1)->get();
+        if (auth()->user()->role == 0 || auth()->user()->role == 3) {
+            $datamahasiswa = User::whereIn('role', [1,2])->get();
+            $dataRfid = Rfid::where('status', 1)->get();
+    
+            $getBooking = Booking::where('status',1)->with('user')->get();
+    
+            return view('booking.peminjaman', [
+                'datamahasiswa' => $datamahasiswa,
+                'dataBooking' => $getBooking,
+                'dataRfid' => $dataRfid
+    
+            ]);
+        }else if (auth()->user()->role == 1 || auth()->user()->role == 2) {
+            $getBooking = Booking::where('status',1)->where('id_user',auth()->user()->id)->with('user')->get();
+    
+            return view('booking.peminjaman', [
+                'dataBooking' => $getBooking    
+            ]);
+        }
 
-        $getBooking = Booking::where('status',1)->with('user')->get();
-
-        return view('booking.peminjaman', [
-            'datamahasiswa' => $datamahasiswa,
-            'dataBooking' => $getBooking,
-            'dataRfid' => $dataRfid
-
-        ]);
     }
 }

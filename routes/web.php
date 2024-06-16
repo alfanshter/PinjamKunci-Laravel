@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\FasilitasController;
 use App\Http\Controllers\FasilitasRfidController;
+use App\Http\Controllers\KpsController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\ModeController;
 use App\Http\Controllers\PinjamKunci;
@@ -35,6 +36,7 @@ Route::post('/register',[UserController::class,'register']);
 Route::post('/logout', [UserController::class,'logout']);
 Route::get('/mahasiswa',[MahasiswaController::class,'index']);
 Route::post('/mahasiswa',[MahasiswaController::class,'index']);
+Route::post('/mahasiswaregister',[MahasiswaController::class,'mahasiswaregister']);
 
 
 //Dashboard Controller
@@ -64,5 +66,9 @@ Route::put('/rfid/{id}',[RfidController::class,'edit'])->middleware('auth');
 Route::delete('/rfid/{id}',[RfidController::class,'destroy']);
 
 //FasilitasRfid
-
 Route::post('/fasilitasRfid',[FasilitasRfidController::class,'store']);
+
+// KPS Controller
+Route::get('/kps',[KpsController::class,'index'])->middleware('auth');
+Route::post('/kps',[KpsController::class,'kpsregister']);
+
