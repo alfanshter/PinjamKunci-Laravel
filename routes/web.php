@@ -40,12 +40,6 @@ Route::post('/mahasiswa',[MahasiswaController::class,'index']);
 //Dashboard Controller
 Route::get('/dashboard',[DashboardController::class,'index'])->middleware('auth');
 
-//Ruangan Controller
-Route::get('/ruangan',[RuanganController::class,'index'])->middleware('auth');
-Route::post('/ruangan',[RuanganController::class,'storeruangan']);
-Route::put('/ruangan/{id}',[RuanganController::class,'edit']);
-Route::delete('/ruangan/{id}',[RuanganController::class,'destory']);
-
 //Fasilitas Controller
 Route::get('/fasilitas',[FasilitasController::class,'index'])->middleware('auth');
 Route::post('/fasilitas',[FasilitasController::class,'storefasilitas']);
@@ -55,8 +49,10 @@ Route::delete('/fasilitas/{id}',[FasilitasController::class,'destroy']);
 //Booking Controller
 Route::get('/booking',[BookingController::class,'index'])->middleware('auth');
 Route::post('/booking',[BookingController::class,'storebooking']);
+Route::post('/bookingDone',[BookingController::class,'done']);
 Route::put('/booking/{id}',[BookingController::class,'edit']);
 Route::delete('/booking/{id}',[BookingController::class,'destroy']);
+Route::get('/peminjaman',[BookingController::class,'peminjaman'])->middleware('auth');
 
 // Dosen Controller
 Route::get('/dosen',[DosenController::class,'index'])->middleware('auth');

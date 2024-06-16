@@ -8,24 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class Booking extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'id_user',
-        'id_ruangan',
-        'id_fasilitas'
+    protected $guarded = [
+        'id'
     ];
 
-    function fasilitas()
-    {
-        return $this->belongsTo(FasilitasRuangan::class, 'id_fasilitas', 'id');
-    }
 
-    function ruangan()
-    {
-        return $this->belongsTo(Ruangan::class, 'id_ruangan', 'id');
-    }
 
     function user()
     {
         return $this->belongsTo(User::class, 'id_user', 'id');
+    }
+
+    function rfid()
+    {
+        return $this->belongsTo(Rfid::class, 'id_rfid', 'id');
     }
 }

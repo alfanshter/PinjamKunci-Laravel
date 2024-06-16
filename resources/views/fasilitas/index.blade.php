@@ -22,9 +22,9 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3">
 
-        <button class="btn btn-primary" data-toggle="modal" data-target="#fasilitasModal">Tambah</button>
+        <!-- <button class="btn btn-primary" data-toggle="modal" data-target="#fasilitasModal">Tambah</button> -->
         <!-- MODAL TAMBAH RUANGAN -->
-        <div class="modal fade" id="fasilitasModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <!-- <div class="modal fade" id="fasilitasModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -47,7 +47,7 @@
 
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -55,8 +55,8 @@
                 <thead>
                     <tr>
                         <th style="width: 10%;">No</th>
-                        <th style="width: 80%;">Nama Ruangan</th>
-                        <th style="width: 10%;">Action</th>
+                        <th style="width: 80%;">Nama Fasilitas</th>
+                        <!-- <th style="width: 10%;">Action</th> -->
                     </tr>
                 </thead>
 
@@ -65,7 +65,7 @@
                     <tr>
                         <td>{{$loop->iteration}}</td>
                         <td>{{$datas->nama_fasilitas}}</td>
-                        <td>
+                        <!-- <td>
                             <div class="d-flex justify-content-center">
                                 <button class="btn btn-warning" data-toggle="modal" data-target="#fasilitasModal{{$datas->id}}">Edit</button>
                                 <div class="modal fade" id="fasilitasModal{{$datas->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -101,7 +101,7 @@
                                 </form>
                                
                             </div>
-                        </td>
+                        </td> -->
 
                     </tr>
                     @endforeach

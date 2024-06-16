@@ -39,6 +39,7 @@
                         <th>Uid</th>
                         <th>Kode</th>
                         <th>Fasilitas</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -59,6 +60,13 @@
                                 @endforeach
                             </ul>
                             @endif
+                        </td>
+                        <td>@if($datas->status == 0)
+                                Tidak Ready
+                                @else
+                                Ready
+                                @endif
+
                         </td>
                         <td>
                             <div class="d-flex justify-content-center">

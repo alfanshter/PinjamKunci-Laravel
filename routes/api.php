@@ -26,3 +26,4 @@ Route::get('/getmode',[ModeController::class,'getmode']);
 
 //RFID
 Route::post('/registerRfid',[RfidController::class,'registerRfid']);
+Route::post('/scan',[RfidController::class,'scanRfid']);

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('uid');
             $table->string('kode')->nullable();
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

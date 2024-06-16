@@ -15,11 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_user'); // Kolom untuk kunci asing
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->unsignedBigInteger('id_ruangan');
-            $table->foreign('id_ruangan')->references('id')->on('ruangans')->onDelete('cascade')->onUpdate('cascade');
-            $table->unsignedBigInteger('id_fasilitas');
-            $table->foreign('id_fasilitas')->references('id')->on('fasilitas_ruangans')->onDelete('cascade')->onUpdate('cascade');
-            $table->string('status',25)->default('');
+            $table->unsignedBigInteger('id_rfid');
+            $table->foreign('id_rfid')->references('id')->on('rfids')->onDelete('cascade')->onUpdate('cascade');
+            $table->boolean('status')->default(false);
             $table->timestamps();
         });
     }

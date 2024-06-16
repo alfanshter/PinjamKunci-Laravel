@@ -69,4 +69,22 @@ class RfidController extends Controller
 
         return redirect('/rfid')->with('berhasil', 'Data Sukses Di Hapus');
     }
+
+    function scanRfid(Request $request) {
+         //cek rfid
+         $data = Rfid::where('uid', $request->uid)->with('fasilitas')->first();
+         //jika rfid tidak ada  
+         if ($data == null) {
+             return $response = [
+                 'message' => "RFID tidak ada",
+                 'status' => 0
+             ];
+         }
+          
+         return $response = [
+             'message' => "Scan berhasil",
+             'status' => 1,
+             'data' => $data->fasilitas,
+         ];
+    }
 }

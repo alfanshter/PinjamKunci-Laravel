@@ -37,18 +37,10 @@
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="recipient-name" class="col-form-label">Ruangan:</label>
-                                <select class="form-control" name="id_ruangan" id="">
-                                    @foreach($dataruangan as $datas)
-                                    <option value="{{$datas->id}}">{{$datas->nama_ruangan}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="recipient-name" class="col-form-label">Fasilitas:</label>
-                                <select class="form-control" name="id_fasilitas" id="">
-                                    @foreach($dataFasilitas as $datas)
-                                    <option value="{{$datas->id}}">{{$datas->nama_fasilitas}}</option>
+                                <label for="recipient-name" class="col-form-label">Name:</label>
+                                <select class="form-control" name="id_rfid" id="">
+                                    @foreach($dataRfid as $dataRfids)
+                                    <option value="{{$dataRfids->id}}">{{$dataRfids->kode}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -70,9 +62,10 @@
                 <thead>
                     <tr>
                         <th style="width: 10%;">No</th>
-                        <th style="width: 30%;">Fasilitas</th>
                         <th style="width:30%">Ruangan</th>
-                        <th style="width: 20%;">User</th>
+                        <th style="width: 20%;">Mahasiswa</th>
+                        <th style="width: 20%;">Fasilitas</th>
+                        <th style="width: 20%;">Tanggal</th>
                         <th style="width: 10%;">Action</th>
                     </tr>
                 </thead>
@@ -81,63 +74,32 @@
                     @foreach($dataBooking as $datas)
                     <tr>
                         <td>{{$loop->iteration}}</td>
-                        <td>{{$datas->fasilitas->nama_fasilitas}}</td>
-                        <td>{{$datas->ruangan->nama_ruangan}}</td>
+                        <td>{{$datas->rfid->kode}}</td>
                         <td>{{$datas->user->name}}</td>
+                        <td>
+                            @foreach($datas->rfid->fasilitas as $fasilitas)
+                            <ul>
+                                <li> {{$fasilitas->nama_fasilitas}}</li>
+                            </ul>
+                            @endforeach
+                        </td>
+                        <td>{{$datas->created_at}}</td>
                         <td>
                             <div class="d-flex justify-content-center">
                                 <button class="btn btn-warning" data-toggle="modal" data-target="#bookingModal{{$datas->id}}">Edit</button>
-                                <div class="modal fade" id="bookingModal{{$datas->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h2 class="modal-title fs-5" id="exampleModalLabel">Edit</h2>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form action="/booking/{{$datas->id}}" method="post">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <div class="mb-3">
-                                                        <label for="recipient-name" class="col-form-label">Name:</label>
-                                                        <select class="form-control" name="id_user" id="">
-                                                            <option value="{{$datas->user->id}}">{{$datas->user->name}}</option>
-                                                            @foreach($datamahasiswa as $datamahasiswas)
-                                                            <option value="{{$datamahasiswas->id}}">{{$datamahasiswas->name}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="recipient-name" class="col-form-label">Ruangan:</label>
-                                                        <select class="form-control" name="id_ruangan" id="">
-                                                            <option value="{{$datas->ruangan->id}}">{{$datas->ruangan->nama_ruangan}}</option>
-                                                            @foreach($dataruangan as $dataruangans)
-                                                            <option value="{{$dataruangans->id}}">{{$dataruangans->nama_ruangan}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="recipient-name" class="col-form-label">Fasilitas:</label>
-                                                        <select class="form-control" name="id_fasilitas" id="">
-                                                            <option value="{{$datas->fasilitas->id}}">{{$datas->fasilitas->nama_fasilitas}}</option>
-                                                            @foreach($dataFasilitas as $dataFasilitass)
-                                                            <option value="{{$dataFasilitass->id}}">{{$dataFasilitass->nama_fasilitas}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                                        <button type="submit" class="btn btn-primary">Update</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                               <form action="/booking/{{$datas->id}}" method="post">
-                                @csrf
-                                @method('DELETE')
-                               <button class="btn btn-danger ml-2"   onclick="return confirm('Apakah anda yakin??')">Delete</button>
-                               </form>
+                                <!-- modal untuk edit -->
+                                <form action="/booking/{{$datas->id}}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-danger ml-2" onclick="return confirm('Apakah anda yakin??')">Delete</button>
+                                </form>
+
+                                <form action="/bookingDone" method="post">
+                                    @csrf
+                                    <input type="hidden" name="id" value="{{$datas->id}}">
+                                    <input type="hidden" name="id_rfid" value="{{$datas->id_rfid}}">
+                                    <button class="btn btn-primary ml-2" onclick="return confirm('Apakah anda yakin??')">Done</button>
+                                </form>
                             </div>
                         </td>
                     </tr>
