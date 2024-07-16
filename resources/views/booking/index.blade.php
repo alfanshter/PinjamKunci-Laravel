@@ -45,6 +45,11 @@
                                 </select>
                             </div>
 
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Keterangan:</label>
+                                <input type="text" name="keterangan" required class="form-control" id="recipient-name">
+                            </div>
+
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-primary">Konfirmasi</button>
@@ -67,12 +72,13 @@
                 <thead>
                     <tr>
                         <th style="width: 10%;">No</th>
-                        <th style="width:30%">Ruangan</th>
-                        <th style="width: 20%;">Nama Peminjam</th>
-                        <th style="width: 20%;">Fasilitas</th>
-                        <th style="width: 20%;">Tanggal</th>
+                        <th >Ruangan</th>
+                        <th >Nama Peminjam</th>
+                        <th >Fasilitas</th>
+                        <th >Keterangan</th>
+                        <th >Tanggal</th>
                         @if(auth()->user()->role == 0)
-                        <th style="width: 10%;">Action</th>
+                        <th >Action</th>
                         @endif
                     </tr>
                 </thead>
@@ -90,11 +96,12 @@
                             </ul>
                             @endforeach
                         </td>
+                        <td>{{$datas->keterangan}}</td>
                         <td>{{$datas->created_at}}</td>
                         @if(auth()->user()->role == 0)
                         <td>
                             <div class="d-flex justify-content-center">
-                                <button class="btn btn-warning" data-toggle="modal" data-target="#bookingModal{{$datas->id}}">Edit</button>
+                                <!-- <button class="btn btn-warning" data-toggle="modal" data-target="#bookingModal{{$datas->id}}">Edit</button> -->
                                 <!-- modal untuk edit -->
                                 <form action="/booking/{{$datas->id}}" method="post">
                                     @csrf

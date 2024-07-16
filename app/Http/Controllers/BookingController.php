@@ -43,7 +43,8 @@ class BookingController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id_user' => 'required',
-            'id_rfid' => 'required'
+            'id_rfid' => 'required',
+            'keterangan' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -54,7 +55,8 @@ class BookingController extends Controller
 
         $savedata = Booking::create([
             'id_user' => $request->id_user,
-            'id_rfid' => $request->id_rfid
+            'id_rfid' => $request->id_rfid,
+            'keterangan' => $request->keterangan
         ]);
 
         //ubah status alat jadi tidak ready 
