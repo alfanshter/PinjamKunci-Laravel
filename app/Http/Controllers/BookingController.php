@@ -56,7 +56,9 @@ class BookingController extends Controller
         $savedata = Booking::create([
             'id_user' => $request->id_user,
             'id_rfid' => $request->id_rfid,
-            'keterangan' => $request->keterangan
+            'keterangan' => $request->keterangan,
+            'waktu_mulai' => $request->waktu_mulai,
+            'waktu_selesai' => $request->waktu_selesai
         ]);
 
         //ubah status alat jadi tidak ready 

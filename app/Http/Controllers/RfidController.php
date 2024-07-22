@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
 use App\Models\FasilitasRuangan;
 use App\Models\Mode;
 use App\Models\Rfid;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -44,47 +46,73 @@ class RfidController extends Controller
         ];
     }
 
-    function edit(Request $request, $id) {
+    function edit(Request $request, $id)
+    {
 
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'kode' => 'required|string|max:25|unique:rfids'
         ]);
 
         if ($validator->fails()) {
             return redirect('/rfid')
-            ->withErrors($validator)
-            ->withInput();
+                ->withErrors($validator)
+                ->withInput();
         }
 
-        $updateData = Rfid::where('id',$id)->update([
+        $updateData = Rfid::where('id', $id)->update([
             'kode' => $request->kode,
         ]);
 
         return redirect('/rfid')->with('berhasil', 'Data Sukses Di Update');
-
     }
 
-    function destroy($id) {
-        $delData = Rfid::where('id',$id)->delete();
+    function destroy($id)
+    {
+        $delData = Rfid::where('id', $id)->delete();
 
         return redirect('/rfid')->with('berhasil', 'Data Sukses Di Hapus');
     }
 
-    function scanRfid(Request $request) {
-         //cek rfid
-         $data = Rfid::where('uid', $request->uid)->with('fasilitas')->first();
-         //jika rfid tidak ada  
-         if ($data == null) {
-             return $response = [
-                 'message' => "RFID tidak ada",
-                 'status' => 0
-             ];
-         }
-          
-         return $response = [
-             'message' => "Scan berhasil",
-             'status' => 1,
-             'data' => $data->fasilitas,
-         ];
+    function scanRfid(Request $request)
+    {
+        //cek rfid
+        $data = Rfid::where('uid', $request->uid)->with('fasilitas')->first();
+        //jika rfid tidak ada  
+        if ($data == null) {
+            return $response = [
+                'message' => "RFID tidak ada",
+                'status' => 0
+            ];
+        }
+
+        //cek karu tidak sesuai 
+        $cekKartu = Booking::where('id_rfid',$data->id)->where('status',0)->first();
+        //Kartu tidak sesuai
+        if ($cekKartu == null) {
+            return $response = [
+                'message' => "Kartu tidak sesuai",
+                'status' => 3
+            ];
+        }
+
+        //cek rfid pada table booking
+        $now = Carbon::now();
+        $cekRfid = Booking::where('id_rfid', $data->id)->where('waktu_mulai', '<=', $now)
+            ->where('waktu_selesai', '>=', $now)
+            ->where('status',0)
+            ->first();
+        //jika rfid gk sesuai tanggal booking maka gk akan bisa masuk
+        if ($cekRfid == null) {
+            return $response = [
+                'message' => "Belum Booking",
+                'status' => 2
+            ];
+        }
+
+        return $response = [
+            'message' => "Scan berhasil",
+            'status' => 1,
+            'data' => $data->fasilitas,
+        ];
     }
 }

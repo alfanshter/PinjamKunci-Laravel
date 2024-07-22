@@ -18,6 +18,10 @@ return new class extends Migration
             $table->unsignedBigInteger('id_rfid');
             $table->foreign('id_rfid')->references('id')->on('rfids')->onDelete('cascade')->onUpdate('cascade');
             $table->boolean('status')->default(false);
+            $table->dateTime('tanggal_booking')->nullable();
+            $table->dateTime('waktu_mulai')->nullable();
+            $table->dateTime('waktu_selesai')->nullable();
+            
             $table->timestamps();
         });
     }

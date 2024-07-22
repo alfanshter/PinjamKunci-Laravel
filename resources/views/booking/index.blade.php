@@ -50,6 +50,15 @@
                                 <input type="text" name="keterangan" required class="form-control" id="recipient-name">
                             </div>
 
+                            <div class="mb-3">
+                                <label for="tanggal-waktu" class="col-form-label">Waktu Mulai:</label>
+                                <input type="datetime-local" name="waktu_mulai" required class="form-control" id="tanggal-waktu">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="tanggal-waktu" class="col-form-label">Waktu Selesai:</label>
+                                <input type="datetime-local" name="waktu_selesai" required class="form-control" id="tanggal-waktu">
+                            </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-primary">Konfirmasi</button>
@@ -63,8 +72,8 @@
         @elseif(auth()->user()->role == 1)
         <p>Daftar Booking <b style="color: black;">{{auth()->user()->name}} !</b></p>
         @endif
-        
-        
+
+
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -72,13 +81,13 @@
                 <thead>
                     <tr>
                         <th style="width: 10%;">No</th>
-                        <th >Ruangan</th>
-                        <th >Nama Peminjam</th>
-                        <th >Fasilitas</th>
-                        <th >Keterangan</th>
-                        <th >Tanggal</th>
+                        <th>Ruangan</th>
+                        <th>Nama Peminjam</th>
+                        <th>Fasilitas</th>
+                        <th>Keterangan</th>
+                        <th>Tanggal Mulai</th>
                         @if(auth()->user()->role == 0)
-                        <th >Action</th>
+                        <th>Action</th>
                         @endif
                     </tr>
                 </thead>
@@ -97,7 +106,11 @@
                             @endforeach
                         </td>
                         <td>{{$datas->keterangan}}</td>
-                        <td>{{$datas->created_at}}</td>
+                        <td>
+                            {{ \Carbon\Carbon::parse($datas->waktu_mulai)->format('d/m/Y H:i') }}
+                            <b style="color: black;">-</b>
+                            {{ \Carbon\Carbon::parse($datas->waktu_selesai)->format('d/m/Y H:i') }}
+                        </td>
                         @if(auth()->user()->role == 0)
                         <td>
                             <div class="d-flex justify-content-center">
