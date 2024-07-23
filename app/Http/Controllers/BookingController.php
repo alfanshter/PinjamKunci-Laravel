@@ -7,6 +7,7 @@ use App\Models\FasilitasRuangan;
 use App\Models\Rfid;
 use App\Models\Ruangan;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -15,7 +16,7 @@ class BookingController extends Controller
     function index()
     {
         //admin
-        if (auth()->user()->role == 0) {
+
             $datamahasiswa = User::whereIn('role', [1, 2])->get();
             $dataRfid = Rfid::where('status', 1)->get();
     
@@ -27,15 +28,15 @@ class BookingController extends Controller
                 'dataRfid' => $dataRfid
     
             ]);
-        }
+        
         //mahasiswa
-        if (auth()->user()->role == 1 || auth()->user()->role == 2) {
-            $getBooking = Booking::where('status',0)->where('id_user',auth()->user()->id)->with('user')->get();
+        // if (auth()->user()->role == 1 || auth()->user()->role == 2) {
+        //     $getBooking = Booking::where('status',0)->where('id_user',auth()->user()->id)->with('user')->get();
     
-            return view('booking.index', [
-                'dataBooking' => $getBooking    
-            ]);
-        }
+        //     return view('booking.index', [
+        //         'dataBooking' => $getBooking    
+        //     ]);
+        // }
 
     }
 
@@ -51,6 +52,17 @@ class BookingController extends Controller
             return redirect('/booking')
                 ->withErrors($validator)
                 ->withInput();
+        }
+
+        //jika jam sama maka tidak akan bisa booking
+        $cekJam = Booking::where('id_rfid',$request->id_rfid)
+        ->where('waktu_mulai', '<=' , $request->waktu_mulai)
+        ->where('waktu_selesai', '>=',  $request->waktu_selesai)
+        ->first();
+
+        if ($cekJam!=null) {
+            return redirect('/booking')->with('failed', 'Jam sudah ada yang booking');
+
         }
 
         $savedata = Booking::create([
@@ -130,7 +142,6 @@ class BookingController extends Controller
 
     function peminjaman()
     {
-        if (auth()->user()->role == 0 || auth()->user()->role == 3) {
             $datamahasiswa = User::whereIn('role', [1,2])->get();
             $dataRfid = Rfid::where('status', 1)->get();
     
@@ -142,13 +153,7 @@ class BookingController extends Controller
                 'dataRfid' => $dataRfid
     
             ]);
-        }else if (auth()->user()->role == 1 || auth()->user()->role == 2) {
-            $getBooking = Booking::where('status',1)->where('id_user',auth()->user()->id)->with('user')->get();
-    
-            return view('booking.peminjaman', [
-                'dataBooking' => $getBooking    
-            ]);
-        }
+       
 
     }
 }
