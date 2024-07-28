@@ -54,10 +54,20 @@
                                 <input type="datetime-local" name="waktu_mulai" required class="form-control" id="tanggal-waktu">
                             </div>
 
+                         
+
                             <div class="mb-3">
-                                <label for="tanggal-waktu" class="col-form-label">Waktu Selesai:</label>
-                                <input type="datetime-local" name="waktu_selesai" required class="form-control" id="tanggal-waktu">
+                                <label for="waktu-selesai" class="col-form-label">Waktu Selesai:</label>
+                                <select name="waktu_selesai" required class="form-control" id="waktu-selesai">
+                                    <option value="30">30 menit</option>
+                                    <option value="60">1 jam</option>
+                                    <option value="90">1,5 jam</option>
+                                    <option value="120">2 jam</option>
+                                    <option value="150">2,5 jam</option>
+                                    <option value="180">3 jam</option>
+                                </select>
                             </div>
+
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-primary">Konfirmasi</button>
@@ -83,6 +93,8 @@
                         <th>Fasilitas</th>
                         <th>Keterangan</th>
                         <th>Tanggal Mulai</th>
+                        <th>Check In</th>
+                        <th>Check Out</th>
                         @if(auth()->user()->role == 0)
                         <th>Action</th>
                         @endif
@@ -108,6 +120,24 @@
                             <b style="color: black;">-</b>
                             {{ \Carbon\Carbon::parse($datas->waktu_selesai)->format('d/m/Y H:i') }}
                         </td>
+
+                        <td>
+                            @if($datas->check_in)
+                            {{ \Carbon\Carbon::parse($datas->check_in)->format('d/m/Y H:i') }}
+                            @else
+                            -
+                            @endif
+
+                        </td>
+                        <td>
+                        @if($datas->check_out)
+                            {{ \Carbon\Carbon::parse($datas->check_out)->format('d/m/Y H:i') }}
+                            @else
+                            -
+                            @endif
+
+                        </td>
+
                         @if(auth()->user()->role == 0)
 
                         <td>

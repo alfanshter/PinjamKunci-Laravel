@@ -86,7 +86,7 @@ class RfidController extends Controller
         }
 
         //cek karu tidak sesuai 
-        $cekKartu = Booking::where('id_rfid',$data->id)->where('status',0)->first();
+        $cekKartu = Booking::where('id_rfid', $data->id)->where('status', 0)->first();
         //Kartu tidak sesuai
         if ($cekKartu == null) {
             return $response = [
@@ -99,7 +99,7 @@ class RfidController extends Controller
         $now = Carbon::now();
         $cekRfid = Booking::where('id_rfid', $data->id)->where('waktu_mulai', '<=', $now)
             ->where('waktu_selesai', '>=', $now)
-            ->where('status',0)
+            ->where('status', 0)
             ->first();
         //jika rfid gk sesuai tanggal booking maka gk akan bisa masuk
         if ($cekRfid == null) {
@@ -107,6 +107,20 @@ class RfidController extends Controller
                 'message' => "Belum Booking",
                 'status' => 2
             ];
+        }
+
+        //check in or checkout 
+        if ($cekRfid->check_in == null) {
+            $updateBooking = Booking::where('id', $cekRfid->id)->update([
+                'check_in' => $now
+            ]);
+        }
+
+        if ($cekRfid->check_in != null && $cekRfid->check_out == null) {
+            $updateBooking = Booking::where('id', $cekRfid->id)->update([
+                'check_out' => $now,
+                'status' => 1
+            ]);
         }
 
         return $response = [

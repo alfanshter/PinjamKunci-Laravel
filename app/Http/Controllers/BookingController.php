@@ -8,6 +8,8 @@ use App\Models\Rfid;
 use App\Models\Ruangan;
 use App\Models\User;
 use Carbon\Carbon;
+use DateInterval;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,22 +19,22 @@ class BookingController extends Controller
     {
         //admin
 
-            $datamahasiswa = User::whereIn('role', [1, 2])->get();
-            $dataRfid = Rfid::where('status', 1)->get();
-    
-            $getBooking = Booking::where('status',0)->with('user')->get();
-    
-            return view('booking.index', [
-                'datamahasiswa' => $datamahasiswa,
-                'dataBooking' => $getBooking,
-                'dataRfid' => $dataRfid
-    
-            ]);
-        
+        $datamahasiswa = User::whereIn('role', [1, 2])->get();
+        $dataRfid = Rfid::where('status', 1)->get();
+
+        $getBooking = Booking::where('status', 0)->with('user')->get();
+
+        return view('booking.index', [
+            'datamahasiswa' => $datamahasiswa,
+            'dataBooking' => $getBooking,
+            'dataRfid' => $dataRfid
+
+        ]);
+
         //mahasiswa
         // if (auth()->user()->role == 1 || auth()->user()->role == 2) {
         //     $getBooking = Booking::where('status',0)->where('id_user',auth()->user()->id)->with('user')->get();
-    
+
         //     return view('booking.index', [
         //         'dataBooking' => $getBooking    
         //     ]);
@@ -54,15 +56,35 @@ class BookingController extends Controller
                 ->withInput();
         }
 
-        //jika jam sama maka tidak akan bisa booking
-        $cekJam = Booking::where('id_rfid',$request->id_rfid)
-        ->where('waktu_mulai', '<=' , $request->waktu_mulai)
-        ->where('waktu_selesai', '>=',  $request->waktu_selesai)
-        ->first();
 
-        if ($cekJam!=null) {
+        $waktu_mulai = $request->waktu_mulai;
+        $durasi = $request->waktu_selesai;
+
+        $dateTime = new DateTime($waktu_mulai);
+        $interval = new DateInterval('PT' . $durasi . 'M');
+        $dateTime->add($interval);
+
+        $waktu_selesai = $dateTime->format('Y-m-d H:i:s');
+
+        // Periksa apakah ada pemesanan tumpang tindih
+        $cekJam = Booking::where('id_rfid', $request->id_rfid)
+            ->where(function ($query) use ($waktu_mulai, $waktu_selesai) {
+                $query->where(function ($query) use ($waktu_mulai, $waktu_selesai) {
+                    $query->where('waktu_mulai', '<=', $waktu_mulai)
+                        ->where('waktu_selesai', '>=', $waktu_mulai);
+                })->orWhere(function ($query) use ($waktu_mulai, $waktu_selesai) {
+                    $query->where('waktu_mulai', '<=', $waktu_selesai)
+                        ->where('waktu_selesai', '>=', $waktu_selesai);
+                })->orWhere(function ($query) use ($waktu_mulai, $waktu_selesai) {
+                    $query->where('waktu_mulai', '>=', $waktu_mulai)
+                        ->where('waktu_selesai', '<=', $waktu_selesai);
+                });
+            })
+            ->first();
+
+
+        if ($cekJam != null) {
             return redirect('/booking')->with('failed', 'Jam sudah ada yang booking');
-
         }
 
         $savedata = Booking::create([
@@ -70,18 +92,19 @@ class BookingController extends Controller
             'id_rfid' => $request->id_rfid,
             'keterangan' => $request->keterangan,
             'waktu_mulai' => $request->waktu_mulai,
-            'waktu_selesai' => $request->waktu_selesai
+            'waktu_selesai' => $waktu_selesai
         ]);
 
-        //ubah status alat jadi tidak ready 
-        $update = Rfid::where('id', $request->id_rfid)->update([
-            'status' => 0
-        ]);
+        // //ubah status alat jadi tidak ready 
+        // $update = Rfid::where('id', $request->id_rfid)->update([
+        //     'status' => 0
+        // ]);
 
         return redirect('/booking')->with('success', 'Data Berhasil Di Simpan');
     }
 
-    function done(Request $request) {
+    function done(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'id' => 'required',
         ]);
@@ -92,18 +115,15 @@ class BookingController extends Controller
         }
 
         //update status 
-        $update = Booking::where('id',$request->id)->update([
+        $update = Booking::where('id', $request->id)->update([
             'status' => 1
         ]);
         //update status rfid
-        $update = Rfid::where('id',$request->id_rfid)->update([
+        $update = Rfid::where('id', $request->id_rfid)->update([
             'status' => 1
         ]);
 
         return redirect('/booking')->with('success', 'Berhasil di selesaikan');
-
-
-
     }
 
     function edit(Request $request, $id)
@@ -142,18 +162,16 @@ class BookingController extends Controller
 
     function peminjaman()
     {
-            $datamahasiswa = User::whereIn('role', [1,2])->get();
-            $dataRfid = Rfid::where('status', 1)->get();
-    
-            $getBooking = Booking::where('status',1)->with('user')->get();
-    
-            return view('booking.peminjaman', [
-                'datamahasiswa' => $datamahasiswa,
-                'dataBooking' => $getBooking,
-                'dataRfid' => $dataRfid
-    
-            ]);
-       
+        $datamahasiswa = User::whereIn('role', [1, 2])->get();
+        $dataRfid = Rfid::where('status', 1)->get();
 
+        $getBooking = Booking::where('status', 1)->with('user')->get();
+
+        return view('booking.peminjaman', [
+            'datamahasiswa' => $datamahasiswa,
+            'dataBooking' => $getBooking,
+            'dataRfid' => $dataRfid
+
+        ]);
     }
 }

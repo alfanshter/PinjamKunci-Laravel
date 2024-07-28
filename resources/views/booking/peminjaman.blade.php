@@ -30,6 +30,8 @@
                         <th>Fasilitas</th>
                         <th>Tanggal Pinjam</th>
                         <th>Tanggal Kembali</th>
+                        <th>Check In</th>
+                        <th>Check Out</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -47,8 +49,24 @@
                             </ul>
                             @endforeach
                         </td>
-                        <td>{{$datas->created_at}}</td>
-                        <td>{{$datas->updated_at}}</td>
+                        <td>{{$datas->waktu_mulai}}</td>
+                        <td>{{$datas->waktu_selesai}}</td>
+                        <td>
+                            @if($datas->check_in)
+                            {{ \Carbon\Carbon::parse($datas->check_in)->format('d/m/Y H:i') }}
+                            @else
+                            -
+                            @endif
+
+                        </td>
+                        <td>
+                        @if($datas->check_out)
+                            {{ \Carbon\Carbon::parse($datas->check_out)->format('d/m/Y H:i') }}
+                            @else
+                            -
+                            @endif
+
+                        </td>
                         <td>@if($datas->status == 0)
                             Pinjam
                             @else

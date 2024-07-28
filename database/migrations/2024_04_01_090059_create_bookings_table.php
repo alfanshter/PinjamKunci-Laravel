@@ -21,6 +21,8 @@ return new class extends Migration
             $table->dateTime('tanggal_booking')->nullable();
             $table->dateTime('waktu_mulai')->nullable();
             $table->dateTime('waktu_selesai')->nullable();
+            $table->dateTime('check_in')->nullable();
+            $table->dateTime('check_out')->nullable();
             
             $table->timestamps();
         });
