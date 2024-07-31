@@ -20,7 +20,8 @@ class BookingController extends Controller
         //admin
 
         $datamahasiswa = User::whereIn('role', [1, 2])->get();
-        $dataRfid = Rfid::where('status', 1)->get();
+        // $dataRfid = Rfid::where('status', 1)->get();
+        $dataRfid = Rfid::all();
 
         $getBooking = Booking::where('status', 0)->with('user')->get();
 
@@ -96,9 +97,9 @@ class BookingController extends Controller
         ]);
 
         // //ubah status alat jadi tidak ready 
-        // $update = Rfid::where('id', $request->id_rfid)->update([
-        //     'status' => 0
-        // ]);
+        $update = Rfid::where('id', $request->id_rfid)->update([
+            'status' => 0
+        ]);
 
         return redirect('/booking')->with('success', 'Data Berhasil Di Simpan');
     }

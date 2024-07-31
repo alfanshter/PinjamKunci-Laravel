@@ -117,6 +117,12 @@ class RfidController extends Controller
         }
 
         if ($cekRfid->check_in != null && $cekRfid->check_out == null) {
+            // //ubah status alat jadi tidak ready 
+
+            $update = Rfid::where('id', $cekRfid->id_rfid)->update([
+                'status' => 1
+            ]);
+
             $updateBooking = Booking::where('id', $cekRfid->id)->update([
                 'check_out' => $now,
                 'status' => 1
